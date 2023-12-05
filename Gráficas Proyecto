@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+gamma1=0.04
+gamma2=10**-7
+omega_0=2
+# Define la función cuya parte real quieres graficar
+def power_absorved(omega,gamma1,gamma2,omega_0,var):
+    numerador= -2*3.14*1j*omega*.01
+    numerador_2=omega_0**2-omega**2-1j*gamma2*omega
+    denominador = (omega_0**2-omega**2-1j*gamma1*omega)
+    return (numerador_2*numerador)/((denominador*numerador_2)-var**4)
+
+# Genera valores para el eje x
+omega = np.linspace(omega_0-1,omega_0+1,500)
+
+# Calcula los valores correspondientes de la función para cada valor de x
+y_real = np.real(power_absorved(omega,gamma1,gamma2,omega_0,.5))
+
+#Transformada Inversa de Fourier
+itx = np.fft.ifft(y_real)
+#Valores Temporales
+t=np.linspace(0,10,200)
+
+#plt.plot(t,itx)
+# Grafica la parte real de la función
+plt.plot(omega, y_real, label='Parte Real')
+plt.xlabel('Eje x')
+plt.ylabel('Parte Real')
+plt.title('Graficar la Parte Real de una Función')
+plt.legend()
+plt.grid(True)
+plt.show()
